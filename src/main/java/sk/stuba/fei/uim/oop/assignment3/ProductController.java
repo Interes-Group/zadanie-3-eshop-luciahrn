@@ -31,13 +31,14 @@ public class ProductController {
         return new ProductResponse(this.service.create(request));
     }
 
-  /* @GetMapping("/{name}")
-    public List<ProductResponse> getAllPoductsByName(@PathVariable("name") String name) {
-        return this.service.getAllByName(name).stream().map(ProductResponse::new).collect(Collectors.toList());
-    }*/
-
     @GetMapping("/{id}")
     public Optional<Product> getProduct(@PathVariable("id") Long id) {
+        Optional<Product> product = getProductFromService(id);
+        return product;
+
+    }
+
+    private Optional<Product> getProductFromService(Long id) {
         Optional<Product> product =this.service.getById(id);
         try{
             product.get();
@@ -45,11 +46,11 @@ public class ProductController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
         }
         return product;
-
     }
 
     @PutMapping("/{id}")
     public Optional<Product> updateProductById(@RequestBody Product newProd ,@PathVariable("id") Long id) {
+        getProductFromService(id);
         return this.service.updateProduct(id, newProd);
     }
 }
