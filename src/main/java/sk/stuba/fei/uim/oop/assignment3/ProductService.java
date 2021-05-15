@@ -62,13 +62,17 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Optional<Product> updateProduct(Long id,Product newProd) {
+    public Product updateProduct(Long id,Product newProd) {
         return repository.findById(id)
                 .map(product -> {
                     product.setName(newProd.getName());
                     product.setDescription(newProd.getDescription());
                     return repository.save(product);
-                });
+                })
+                .orElseGet(() -> {
+            newProd.setId(id);
+            return repository.save(newProd);
+        });
     }
 
 

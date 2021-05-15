@@ -49,7 +49,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Optional<Product> updateProductById(@RequestBody Product newProd ,@PathVariable("id") Long id) {
+    public Product updateProductById(@RequestBody Product newProd ,@PathVariable("id") Long id) {
         getProductFromService(id);
         return this.service.updateProduct(id, newProd);
     }

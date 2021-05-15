@@ -10,5 +10,5 @@ public interface IProductService {
     Product create(ProductRequest request);
     List<Product> getAllByName(String name);
     Optional<Product> getById(Long id);
-    Optional<Product> updateProduct(Long id,Product product);
+    Product updateProduct(Long id,Product product);
 }
