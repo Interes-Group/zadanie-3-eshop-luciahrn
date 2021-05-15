@@ -82,5 +82,9 @@ public class ProductService implements IProductService {
 
     }
 
+    @Override
+    public void deleteProduct(Long id) {
+        this.repository.deleteById(id);
+    }
 
 }
