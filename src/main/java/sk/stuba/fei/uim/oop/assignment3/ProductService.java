@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.assignment3;
 
 
 
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -63,16 +65,21 @@ public class ProductService implements IProductService {
 
     @Override
     public Product updateProduct(Long id,Product newProd) {
-        return repository.findById(id)
-                .map(product -> {
-                    product.setName(newProd.getName());
-                    product.setDescription(newProd.getDescription());
-                    return repository.save(product);
-                })
-                .orElseGet(() -> {
-            newProd.setId(id);
-            return repository.save(newProd);
-        });
+
+        Optional<Product> p=this.repository.findById(id);
+        Product old=new Product();
+        if (p.isPresent()) {
+            old = p.get();
+        }
+        if (Objects.nonNull(newProd.getName())) {
+            old.setName(newProd.getName());
+        }
+        if (Objects.nonNull(newProd.getDescription())) {
+            old.setDescription(newProd.getDescription());
+        }
+        return this.repository.save(old);
+
+
     }
 
 
