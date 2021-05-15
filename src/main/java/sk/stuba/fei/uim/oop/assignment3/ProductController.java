@@ -2,11 +2,14 @@ package sk.stuba.fei.uim.oop.assignment3;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -36,8 +39,10 @@ public class ProductController {
     @GetMapping("/{id}")
     public Optional<Product> getProduct(@PathVariable("id") Long id) {
         Optional<Product> product =this.service.getById(id);
-        if(product.get() == null) {
-            throw new IllegalArgumentException("not found");
+        try{
+            product.get();
+        }catch(NoSuchElementException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
         }
         return product;
 
