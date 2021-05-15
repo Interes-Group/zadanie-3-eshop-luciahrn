@@ -5,8 +5,11 @@ package sk.stuba.fei.uim.oop.assignment3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Entity;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService implements IProductService {
@@ -22,10 +25,10 @@ public class ProductService implements IProductService {
 
         a1.setName("Product1");
         this.repository.save(a1);
-        //Product a2 = new Product();
+        Product a2 = new Product();
 
-        //a2.setName("Felix");
-        //this.repository.save(a2);
+        a2.setName("Felix");
+        this.repository.save(a2);
     }
 
     @Override
@@ -49,4 +52,24 @@ public class ProductService implements IProductService {
     public List<Product> getAllByName(String name) {
         return this.repository.findByName(name);
     }
+
+    @Override
+    public Optional<Product> getById(Long id) {
+
+
+
+        return this.repository.findById(id);
+    }
+
+    @Override
+    public Optional<Product> updateProduct(Long id,Product newProd) {
+        return repository.findById(id)
+                .map(product -> {
+                    product.setName(newProd.getName());
+                    product.setDescription(newProd.getDescription());
+                    return repository.save(product);
+                });
+    }
+
+
 }
