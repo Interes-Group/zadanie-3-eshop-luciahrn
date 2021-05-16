@@ -136,7 +136,6 @@ class Assignment3Tests {
         mockMvc.perform(get("/product/" + product.getId() + "/amount")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-
                 .andDo(mvcResult -> {
                     Amount response = stringToObject(mvcResult, Amount.class);
                     assert Objects.equals(response.getAmount(), product.getAmount());
