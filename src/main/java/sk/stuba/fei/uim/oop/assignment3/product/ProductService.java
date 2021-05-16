@@ -1,14 +1,14 @@
-package sk.stuba.fei.uim.oop.assignment3;
+package sk.stuba.fei.uim.oop.assignment3.product;
 
 
 
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sk.stuba.fei.uim.oop.assignment3.product.IProductService;
+import sk.stuba.fei.uim.oop.assignment3.product.Product;
+import sk.stuba.fei.uim.oop.assignment3.product.ProductRepository;
+import sk.stuba.fei.uim.oop.assignment3.product.ProductRequest;
 
-import javax.persistence.Entity;
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,10 +26,11 @@ public class ProductService implements IProductService {
         Product a1 = new Product();
 
         a1.setName("Product1");
+        a1.setAmount(10);
         this.repository.save(a1);
         Product a2 = new Product();
 
-        a2.setName("Felix");
+        a2.setName("Product2");
         this.repository.save(a2);
     }
 
@@ -85,6 +86,33 @@ public class ProductService implements IProductService {
     @Override
     public void deleteProduct(Long id) {
         this.repository.deleteById(id);
+    }
+
+    @Override
+    public Integer getAmount(Long id) {
+        Optional<Product> p=this.repository.findById(id);
+        Product product =new Product();
+        if (p.isPresent()) {
+            product = p.get();
+        }
+
+
+        return product.getAmount();
+
+    }
+
+    @Override
+    public Product incrementAmount(Long id,Product newProd) {
+        Optional<Product> p=this.repository.findById(id);
+        Product old=new Product();
+        if (p.isPresent()) {
+            old = p.get();
+        }
+        old.setAmount(newProd.getAmount());
+
+
+        return this.repository.save(old);
+
     }
 
 }

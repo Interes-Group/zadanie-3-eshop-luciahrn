@@ -1,4 +1,4 @@
-package sk.stuba.fei.uim.oop.assignment3;
+package sk.stuba.fei.uim.oop.assignment3.product;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -57,6 +55,22 @@ public class ProductController {
     public void deleteProductById(@PathVariable("id") Long id) {
         getProductFromService(id);
         this.service.deleteProduct(id);
+
+    }
+
+    @GetMapping("/{id}/amount")
+    public Integer getProductAmount(@PathVariable("id") Long id) {
+        Optional<Product> p=getProductFromService(id);
+        Integer productAmount=this.service.getAmount(id);
+        return productAmount;
+
+    }
+
+    @PostMapping("/{id}/amount")
+    public Integer incrementProductAmount(@RequestBody Product newProd,@PathVariable("id") Long id) {
+        Optional<Product> p=getProductFromService(id);
+        Product product=this.service.incrementAmount(id,newProd);
+        return product.getAmount();
 
     }
 }

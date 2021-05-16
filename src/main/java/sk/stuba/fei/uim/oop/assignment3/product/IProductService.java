@@ -1,6 +1,4 @@
-package sk.stuba.fei.uim.oop.assignment3;
-
-import org.springframework.expression.spel.ast.OpInc;
+package sk.stuba.fei.uim.oop.assignment3.product;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,4 +10,6 @@ public interface IProductService {
     Optional<Product> getById(Long id);
     Product updateProduct(Long id,Product product);
     void deleteProduct(Long id);
+    Integer getAmount(Long id);
+    Product incrementAmount(Long id,Product newProd);
 }
