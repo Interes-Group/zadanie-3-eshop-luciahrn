@@ -11,5 +11,5 @@ public interface IProductService {
     Product updateProduct(Long id,Product product);
     void deleteProduct(Long id);
     Integer getAmount(Long id);
-    Product incrementAmount(Long id,Product newProd);
+    Integer incrementAmount(Long id,Product newProd);
 }

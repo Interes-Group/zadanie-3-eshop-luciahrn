@@ -102,16 +102,18 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product incrementAmount(Long id,Product newProd) {
+    public Integer incrementAmount(Long id,Product newProd) {
         Optional<Product> p=this.repository.findById(id);
         Product old=new Product();
         if (p.isPresent()) {
             old = p.get();
         }
-        old.setAmount(newProd.getAmount());
+        Integer oldAmount=old.getAmount();
+        old.setAmount(oldAmount+newProd.getAmount());
+        this.repository.save(old);
 
 
-        return this.repository.save(old);
+        return old.getAmount();
 
     }
 

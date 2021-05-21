@@ -4,11 +4,9 @@ package sk.stuba.fei.uim.oop.assignment3.product;
 
 import lombok.Getter;
 import lombok.Setter;
+import sk.stuba.fei.uim.oop.assignment3.cart.Cart;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -22,4 +20,6 @@ public class Product {
     private String unit;
     private String name;
     private Integer price;
+
+
 }
