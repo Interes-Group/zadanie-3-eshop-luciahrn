@@ -7,6 +7,7 @@ import sk.stuba.fei.uim.oop.assignment3.product.ProductRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartService implements ICartService {
@@ -37,10 +38,7 @@ public class CartService implements ICartService {
         return this.repository.findAll();
     }
 
-    @Override
-    public Cart getById(long id) {
-        return this.repository.findById(id).orElseThrow();
-    }
+
 
 
 
@@ -54,5 +52,16 @@ public class CartService implements ICartService {
         return this.repository.save(newCart);
     }
 
+    @Override
+    public Optional<Cart> getById(Long id) {
+
+
+
+        return this.repository.findById(id);
+    }
+    @Override
+    public void deleteCart(Long id) {
+        this.repository.deleteById(id);
+    }
 
 }
