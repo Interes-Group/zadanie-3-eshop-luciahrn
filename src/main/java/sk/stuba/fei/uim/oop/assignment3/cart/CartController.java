@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import sk.stuba.fei.uim.oop.assignment3.product.Product;
-import sk.stuba.fei.uim.oop.assignment3.product.ProductRequest;
-import sk.stuba.fei.uim.oop.assignment3.product.ProductResponse;
+import sk.stuba.fei.uim.oop.assignment3.product.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -19,6 +18,8 @@ public class CartController {
 
     @Autowired
     private ICartService service;
+    @Autowired
+    private ProductController productController;
 
     @GetMapping()
     public List<CartResponse> getAll() {
@@ -55,4 +56,62 @@ public class CartController {
         this.service.deleteCart(id);
 
     }
+
+    @PostMapping("/{id}/add")
+    public Optional<Cart> addProductToCart(@RequestBody ShoppingList newList,@PathVariable("id") Long id) {
+        Optional<Cart> p=getCartFromService(id);
+        if (p.get().isPayed()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        List <ShoppingList> lists=this.service.getShoppingList(id);
+        boolean inCart=false;
+        Optional<Product> product=productController.getProductFromService(newList.getProductId());
+
+         long newAmount= product.get().getAmount() - newList.getAmount();
+
+         if(newAmount < 0) {
+             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"not enough products");
+         }
+
+
+        product.get().setAmount((int)newAmount);
+
+        for (ShoppingList list: lists) {
+            if (list.getProductId()==newList.getProductId()) {
+                inCart=true;
+                list.setAmount(list.getAmount()+ newList.getAmount());
+            }
+
+        }
+        if (!inCart) {
+            //product.get().setAmount((int)newAmount);
+            ShoppingList list = new ShoppingList();
+            list.setProductId(newList.getProductId());
+            list.setAmount(newList.getAmount());
+            lists.add(list);
+        }
+
+        return p;
+
+    }
+
+    /*@GetMapping("/{id}/pay")
+    public BigDecimal payCart(@PathVariable("id") Long id) {
+        Optional<Cart> cart=getCartFromService(id);
+        if (cart.get().isPayed()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        List <ShoppingList> list=this.service.getShoppingList(id);
+        BigDecimal price=new BigDecimal(0);
+
+        price = this.service.getPriceById(list);
+        //cart.get().setPayed(true);
+        this.service.updateCart(cart);
+
+        Optional<Cart> cart1=getCartFromService(id);
+
+        return price;
+
+
+    }*/
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 import sk.stuba.fei.uim.oop.assignment3.cart.Cart;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -19,7 +20,7 @@ public class Product {
     private String description;
     private String unit;
     private String name;
-    private Integer price;
+    private BigDecimal price;
 
 
 }

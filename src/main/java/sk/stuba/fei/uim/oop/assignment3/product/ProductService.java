@@ -117,4 +117,20 @@ public class ProductService implements IProductService {
 
     }
 
+    @Override
+    public Integer decrementAmount(Long id,Product newProd) {
+        Optional<Product> p=this.repository.findById(id);
+        Product old=new Product();
+        if (p.isPresent()) {
+            old = p.get();
+        }
+        Integer oldAmount=old.getAmount();
+        old.setAmount(oldAmount-newProd.getAmount());
+        this.repository.save(old);
+
+
+        return old.getAmount();
+
+    }
+
 }

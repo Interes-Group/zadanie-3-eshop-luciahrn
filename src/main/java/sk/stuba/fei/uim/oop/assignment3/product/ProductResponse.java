@@ -3,6 +3,8 @@ package sk.stuba.fei.uim.oop.assignment3.product;
 import lombok.Getter;
 import sk.stuba.fei.uim.oop.assignment3.product.Product;
 
+import java.math.BigDecimal;
+
 @Getter
 public class ProductResponse {
 
@@ -11,7 +13,7 @@ public class ProductResponse {
     private String name;
     private Integer amount;
     private String unit;
-    private Integer price;
+    private BigDecimal price;
 
 
 

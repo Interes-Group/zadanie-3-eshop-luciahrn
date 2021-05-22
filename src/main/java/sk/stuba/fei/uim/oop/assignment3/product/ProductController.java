@@ -39,7 +39,7 @@ public class ProductController {
 
     }
 
-    private Optional<Product> getProductFromService(Long id) {
+    public Optional<Product> getProductFromService(Long id) {
         Optional<Product> product =this.service.getById(id);
         try{
             product.get();

@@ -19,7 +19,4 @@ public class ShoppingList {
     private long amount;
 
 
-
-
-
 }

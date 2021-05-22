@@ -12,4 +12,5 @@ public interface IProductService {
     void deleteProduct(Long id);
     Integer getAmount(Long id);
     Integer incrementAmount(Long id,Product newProd);
+    public Integer decrementAmount(Long id,Product newProd);
 }

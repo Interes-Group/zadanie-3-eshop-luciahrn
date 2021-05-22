@@ -22,16 +22,26 @@ public class Cart {
     private Long id;
 
 
+    public boolean isPayed() {
+        return payed;
+    }
+
+    public boolean getPayed() {
+        return payed;
+    }
+
+    public void setPayed(boolean payed) {
+        this.payed = payed;
+    }
+
     private boolean payed;
 
 
     @ElementCollection
     private List<ShoppingList> shoppingList = new ArrayList<>();
 
-    public Cart(boolean payed) {
-        this.payed = payed;
 
-    }
+
 
 
 }
