@@ -8,7 +8,7 @@ import sk.stuba.fei.uim.oop.assignment3.product.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.NoSuchElementException;
+
 import java.util.Optional;
 
 
@@ -32,14 +32,14 @@ public class CartController {
 
     private Optional<Cart> getCartFromService(Long id) {
         Optional<Cart> cart =this.service.getById(id);
-        try{
 
-                cart.get();
+            if (cart.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "cart not found");
+            }
 
-        }catch(NoSuchElementException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
-        }
         return cart;
+
+
     }
 
     @GetMapping("/{id}")
@@ -59,21 +59,26 @@ public class CartController {
     @PostMapping("/{id}/add")
     public Optional<Cart> addProductToCart(@RequestBody ShoppingList newList,@PathVariable("id") Long id) {
         Optional<Cart> p=getCartFromService(id);
-        if (p.get().isPayed()) {
+
+        if (p.isPresent() && p.get().isPayed()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         List <ShoppingList> lists=this.service.getShoppingList(id);
         boolean inCart=false;
         Optional<Product> product=productController.getProductFromService(newList.getProductId());
-
-         long newAmount= product.get().getAmount() - newList.getAmount();
+        long newAmount=0;
+        if (product.isPresent()) {
+            newAmount = product.get().getAmount() - newList.getAmount();
+        }
 
          if(newAmount < 0) {
              throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"not enough products");
          }
 
 
-        product.get().setAmount((int)newAmount);
+         if (product.isPresent()) {
+             product.get().setAmount((int) newAmount);
+         }
 
         for (ShoppingList list: lists) {
             if (list.getProductId()==newList.getProductId()) {
@@ -97,14 +102,16 @@ public class CartController {
     @GetMapping("/{id}/pay")
     public String payCart(@PathVariable("id") Long id) {
         Optional<Cart> cart=getCartFromService(id);
-        if (cart.get().isPayed()) {
+        if (cart.isPresent() && cart.get().isPayed()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         List <ShoppingList> list=this.service.getShoppingList(id);
         BigDecimal price;
 
         price = this.service.getPriceById(list);
-        cart.get().setPayed(true);
+
+            cart.get().setPayed(true);
+
 
 
 
