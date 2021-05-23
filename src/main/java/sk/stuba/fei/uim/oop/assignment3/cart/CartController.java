@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/cart")
@@ -21,10 +21,7 @@ public class CartController {
     @Autowired
     private ProductController productController;
 
-    @GetMapping()
-    public List<CartResponse> getAll() {
-        return this.service.getAll().stream().map(CartResponse::new).collect(Collectors.toList());
-    }
+
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -36,7 +33,9 @@ public class CartController {
     private Optional<Cart> getCartFromService(Long id) {
         Optional<Cart> cart =this.service.getById(id);
         try{
-            cart.get();
+
+                cart.get();
+
         }catch(NoSuchElementException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
         }
@@ -84,7 +83,7 @@ public class CartController {
 
         }
         if (!inCart) {
-            //product.get().setAmount((int)newAmount);
+
             ShoppingList list = new ShoppingList();
             list.setProductId(newList.getProductId());
             list.setAmount(newList.getAmount());
@@ -95,23 +94,22 @@ public class CartController {
 
     }
 
-    /*@GetMapping("/{id}/pay")
-    public BigDecimal payCart(@PathVariable("id") Long id) {
+    @GetMapping("/{id}/pay")
+    public String payCart(@PathVariable("id") Long id) {
         Optional<Cart> cart=getCartFromService(id);
         if (cart.get().isPayed()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         List <ShoppingList> list=this.service.getShoppingList(id);
-        BigDecimal price=new BigDecimal(0);
+        BigDecimal price;
 
         price = this.service.getPriceById(list);
-        //cart.get().setPayed(true);
-        this.service.updateCart(cart);
-
-        Optional<Cart> cart1=getCartFromService(id);
-
-        return price;
+        cart.get().setPayed(true);
 
 
-    }*/
+
+        return price.toString();
+
+
+    }
 }

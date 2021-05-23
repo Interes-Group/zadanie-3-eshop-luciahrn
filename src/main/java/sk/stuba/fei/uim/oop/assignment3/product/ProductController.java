@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import sk.stuba.fei.uim.oop.assignment3.cart.CartResponse;
+
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -64,7 +64,7 @@ public class ProductController {
     @GetMapping("/{id}/amount")
     public Amount getProductAmount(@PathVariable("id") Long id) {
         Amount a =new Amount();
-        Optional<Product> p=getProductFromService(id);
+        getProductFromService(id);
         Integer productAmount=this.service.getAmount(id);
         a.setAmount(productAmount);
         return a;
@@ -74,7 +74,7 @@ public class ProductController {
     @PostMapping("/{id}/amount")
     public Amount incrementProductAmount(@RequestBody Product newProd,@PathVariable("id") Long id) {
         Amount a =new Amount();
-        Optional<Product> p=getProductFromService(id);
+        getProductFromService(id);
         Integer productAmount=this.service.incrementAmount(id,newProd);
         a.setAmount(productAmount);
         return a;

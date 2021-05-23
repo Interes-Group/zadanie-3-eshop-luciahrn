@@ -4,10 +4,6 @@ package sk.stuba.fei.uim.oop.assignment3.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sk.stuba.fei.uim.oop.assignment3.product.IProductService;
-import sk.stuba.fei.uim.oop.assignment3.product.Product;
-import sk.stuba.fei.uim.oop.assignment3.product.ProductRepository;
-import sk.stuba.fei.uim.oop.assignment3.product.ProductRequest;
 
 import java.util.List;
 import java.util.Objects;
@@ -117,20 +113,6 @@ public class ProductService implements IProductService {
 
     }
 
-    @Override
-    public Integer decrementAmount(Long id,Product newProd) {
-        Optional<Product> p=this.repository.findById(id);
-        Product old=new Product();
-        if (p.isPresent()) {
-            old = p.get();
-        }
-        Integer oldAmount=old.getAmount();
-        old.setAmount(oldAmount-newProd.getAmount());
-        this.repository.save(old);
 
-
-        return old.getAmount();
-
-    }
 
 }

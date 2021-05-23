@@ -4,7 +4,7 @@ package sk.stuba.fei.uim.oop.assignment3.product;
 
 import lombok.Getter;
 import lombok.Setter;
-import sk.stuba.fei.uim.oop.assignment3.cart.Cart;
+
 
 import javax.persistence.*;
 import java.math.BigDecimal;

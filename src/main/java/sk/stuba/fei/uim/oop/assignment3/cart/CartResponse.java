@@ -18,8 +18,6 @@ public class CartResponse {
     public CartResponse(Cart c) {
         this.id =c.getId();
         this.shoppingList=c.getShoppingList();
-        //this.shoppingList = c.getShoppingList().stream().map(Product::getId).collect(Collectors.toList());
-        //this.shoppingList = c.getShoppingList().stream().map(Product::getAmount).collect(Collectors.toList());
         this.payed = c.isPayed();
 
     }
